@@ -1,11 +1,8 @@
+import { ChatResponse } from '@/types';
 import axios from 'axios';
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-
-type ChatResponse = {
-    message: string | null;
-    error: string | null;
-};
+import { Pressable, Text, TextInput, View } from 'react-native';
+import '../global.css';
 
 export default function Index() {
     const [message, setMessage] = useState<string>('');
@@ -20,34 +17,27 @@ export default function Index() {
     };
 
     return (
-        <View style={styles.container}>
-            <TextInput
-                placeholder='Enter a message'
-                style={{
-                    width: 250,
-                    borderWidth: 1.5,
-                    padding: 12,
-                    borderRadius: 50,
-                }}
-                value={message}
-                onChangeText={setMessage}
-            />
+        <View className='flex-1'>
+            <View className='flex-1'>
+                {response && (
+                    <View>
+                        <Text>{response.message}</Text>
+                    </View>
+                )}
+            </View>
 
-            <Button title='Submit' onPress={() => sendMessage(message)} />
+            <View className='flex-row items-center gap-2 p-4'>
+                <TextInput
+                    placeholder='Enter a message'
+                    className='w-80 rounded-full border border-black p-3 text-black'
+                    value={message}
+                    onChangeText={setMessage}
+                />
 
-            {response && (
-                <View>
-                    <Text>{response.message}</Text>
-                </View>
-            )}
+                <Pressable onPress={() => sendMessage(message)}>
+                    <FaCircleArrowUp />
+                </Pressable>
+            </View>
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
