@@ -1,15 +1,22 @@
+import axios from 'axios';
 import { useState } from 'react';
-import { Button, StyleSheet, TextInput, View } from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+
+type ChatResponse = {
+    message: string | null;
+    error: string | null;
+};
 
 export default function Index() {
     const [message, setMessage] = useState<string>('');
+    const [response, setResponse] = useState<ChatResponse | null>(null);
+    const [error, setError] = useState(null);
 
-    const sendMessage = (message: string) => {
-        fetch('http://10.0.0.51:8080/hello', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message }),
-        });
+    const sendMessage = async (message: string) => {
+        await axios
+            .post('http://10.0.0.51:8080/hello', { message })
+            .then((res) => setResponse(res.data))
+            .catch((err) => setError(err));
     };
 
     return (
@@ -25,7 +32,14 @@ export default function Index() {
                 value={message}
                 onChangeText={setMessage}
             />
+
             <Button title='Submit' onPress={() => sendMessage(message)} />
+
+            {response && (
+                <View>
+                    <Text>{response.message}</Text>
+                </View>
+            )}
         </View>
     );
 }
