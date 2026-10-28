@@ -1,4 +1,5 @@
 import { ChatResponse } from '@/types';
+import { FontAwesome6 } from '@react-native-vector-icons/fontawesome6';
 import axios from 'axios';
 import { useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
@@ -26,16 +27,21 @@ export default function Index() {
                 )}
             </View>
 
-            <View className='flex-row items-center gap-2 p-4'>
+            <View className='flex-row items-center justify-center gap-2 p-4 mb-8'>
                 <TextInput
                     placeholder='Enter a message'
-                    className='w-80 rounded-full border border-black p-3 text-black'
+                    className='w-80 h-14 rounded-md border border-black p-3 text-black'
                     value={message}
                     onChangeText={setMessage}
                 />
 
-                <Pressable onPress={() => sendMessage(message)}>
-                    <FaCircleArrowUp />
+                <Pressable onPress={() => sendMessage(message)} className="flex justify-center items-center">
+                    <FontAwesome6
+                        name='circle-arrow-up'
+                        iconStyle='solid'
+                        size={45}
+                        color='blue'
+                    />
                 </Pressable>
             </View>
         </View>
