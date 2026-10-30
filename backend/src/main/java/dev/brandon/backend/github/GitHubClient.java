@@ -18,14 +18,36 @@ public class GitHubClient {
     public String getAuthenticatedApp() throws IOException, GeneralSecurityException {
         String jwt = gitHubAuthService.generateAppJWT();
 
-        String response = restClient.get()
+        return restClient.get()
                 .uri("/app")
                 .headers(headers -> headers.setBearerAuth(jwt))
                 .header("Accept", "application/vnd.github+json")
                 .header("X-GitHub-Api-Version", "2026-03-10")
                 .retrieve()
                 .body(String.class);
+    }
 
-        return response;
+    public String getInstallations() throws IOException, GeneralSecurityException {
+        String jwt = gitHubAuthService.generateAppJWT();
+
+        return restClient.get()
+                .uri("/app/installations")
+                .headers(headers -> headers.setBearerAuth(jwt))
+                .header("Accept", "application/vnd.github+json")
+                .header("X-GitHub-Api-Version", "2026-03-10")
+                .retrieve()
+                .body(String.class);
+    }
+
+    public String createInstallationToken(long installationId) throws IOException, GeneralSecurityException {
+        String jwt = gitHubAuthService.generateAppJWT();
+
+        return restClient.post()
+                .uri("/app/installations/{installationId}/access_tokens", installationId)
+                .headers(headers -> headers.setBearerAuth(jwt))
+                .header("Accept", "application/vnd.github+json")
+                .header("X-GitHub-Api-Version", "2026-03-10")
+                .retrieve()
+                .body(String.class);
     }
 }
