@@ -1,5 +1,6 @@
 package dev.brandon.backend.github;
 
+import dev.brandon.backend.dto.GitHubInstallationTokenResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -39,7 +40,7 @@ public class GitHubClient {
                 .body(String.class);
     }
 
-    public String createInstallationToken(long installationId) throws IOException, GeneralSecurityException {
+    public GitHubInstallationTokenResponse createInstallationToken(long installationId) throws IOException, GeneralSecurityException {
         String jwt = gitHubAuthService.generateAppJWT();
 
         return restClient.post()
@@ -48,6 +49,20 @@ public class GitHubClient {
                 .header("Accept", "application/vnd.github+json")
                 .header("X-GitHub-Api-Version", "2026-03-10")
                 .retrieve()
+                .body(GitHubInstallationTokenResponse.class);
+    }
+
+    public String getRepositories(long installationId) throws IOException, GeneralSecurityException {
+        GitHubInstallationTokenResponse response = createInstallationToken(installationId);
+
+        return restClient.get()
+                .uri("/installation/repositories")
+                .headers(headers -> headers.setBearerAuth(response.getToken()))
+                .header("Accept", "application/vnd.github+json")
+                .header("X-GitHub-Api-Version", "2026-03-10")
+                .retrieve()
                 .body(String.class);
+
+
     }
 }

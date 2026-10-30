@@ -1,5 +1,6 @@
 package dev.brandon.backend.github;
 
+import dev.brandon.backend.dto.GitHubInstallationTokenResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +27,13 @@ public class GitHubController {
         return gitHubClient.getInstallations();
     }
 
-    @PostMapping("/api/github/app/installations/{installationId}/access_tokens")
-    public String getAccessTokens(@PathVariable long installationId ) throws IOException, GeneralSecurityException{
-        return gitHubClient.createInstallationToken(installationId);
+//    @PostMapping("/api/github/app/installations/{installationId}/access_tokens")
+//    public GitHubInstallationTokenResponse getAccessTokens(@PathVariable long installationId ) throws IOException, GeneralSecurityException{
+//        return gitHubClient.createInstallationToken(installationId);
+//    }
+
+    @GetMapping("/api/github/installations/{installationId}/repositories")
+    public String getRepositories(@PathVariable long installationId) throws IOException, GeneralSecurityException {
+        return gitHubClient.getRepositories(installationId);
     }
 }
