@@ -98,7 +98,7 @@ export default function Index() {
                 <TextInput
                     multiline
                     placeholder='Enter a message'
-                    className='w-80 min-h-14 max-h-32 rounded-md border border-black px-4 py-3 text-black text-lg'
+                    className='w-80 min-h-14 max-h-32 rounded-[50] border px-4 py-3 text-black text-lg'
                     value={message}
                     onChangeText={setMessage}
                 />
