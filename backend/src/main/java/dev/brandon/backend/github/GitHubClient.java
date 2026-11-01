@@ -62,7 +62,17 @@ public class GitHubClient {
                 .header("X-GitHub-Api-Version", "2026-03-10")
                 .retrieve()
                 .body(String.class);
+    }
 
+    public String getReadme(long installationId, String owner, String repo) throws IOException, GeneralSecurityException {
+        GitHubInstallationTokenResponse response = createInstallationToken(installationId);
 
+        return restClient.get()
+                .uri("/repos/{owner}/{repo}/readme", owner, repo )
+                .headers(headers -> headers.setBearerAuth(response.getToken()))
+                .header("Accept", "application/vnd.github.raw+json")
+                .header("X-GitHub-Api-Version", "2026-03-10")
+                .retrieve()
+                .body(String.class);
     }
 }
