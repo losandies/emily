@@ -1,6 +1,8 @@
 package dev.brandon.backend.github;
 
-import dev.brandon.backend.dto.GitHubInstallationTokenResponse;
+import dev.brandon.backend.dto.github.GitHubInstallationTokenResponse;
+import dev.brandon.backend.dto.github.GithubCommitResponse;
+import dev.brandon.backend.dto.github.RepositoryContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -75,4 +77,17 @@ public class GitHubClient {
                 .retrieve()
                 .body(String.class);
     }
+
+    public GithubCommitResponse[] getRecentCommits(long installationId, String owner, String repo) throws IOException, GeneralSecurityException {
+        GitHubInstallationTokenResponse response = createInstallationToken(installationId);
+
+        return restClient.get()
+                .uri("/repos/{owner}/{repo}/commits?per_page=10", owner, repo )
+                .headers(headers -> headers.setBearerAuth(response.getToken()))
+                .header("Accept", "application/vnd.github+json")
+                .header("X-GitHub-Api-Version", "2026-03-10")
+                .retrieve()
+                .body(GithubCommitResponse[].class);
+    }
+
 }

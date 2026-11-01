@@ -1,4 +1,4 @@
-package dev.brandon.backend.dto;
+package dev.brandon.backend.dto.github;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
