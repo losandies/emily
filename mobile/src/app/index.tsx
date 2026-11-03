@@ -79,14 +79,12 @@ export default function Index() {
 
         setMessage('');
 
-        console.log('Sending:', message);
 
         await axios
             .post('http://10.0.0.51:8080/hello', { message })
             .then((res) => {
                 const id = nextMessageId.current;
                 nextMessageId.current += 1;
-                console.log(res.data.message);
 
                 const assistantMessage: ChatMessage = {
                     role: 'assistant',
